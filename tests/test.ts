@@ -8,10 +8,11 @@ test.beforeEach(async ({ page }) => {
 	await page.route('/todos', async (route) => {
 		const request = route.request();
 		switch (request.method()) {
-			case 'GET':
+			case 'GET': {
 				await route.fulfill({ status: 200, body: JSON.stringify(todos) });
 				break;
-			case 'POST':
+			}
+			case 'POST': {
 				const todo = request.postData();
 				if (todo === null) {
 					await route.fulfill({ status: 400 });
@@ -21,8 +22,10 @@ test.beforeEach(async ({ page }) => {
 				todos = [...todos, JSON.parse(todo)];
 				await route.fulfill({ status: 201, body: JSON.stringify({ id: todos.length }) });
 				break;
-			default:
+			}
+			default: {
 				await route.fulfill({ status: 404 });
+			}
 		}
 	});
 });
