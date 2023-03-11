@@ -6,7 +6,7 @@
 
 	export let data: PageData;
 
-	let value: string = '';
+	let value = '';
 
 	async function handleKeydown(event: KeyboardEvent) {
 		console.log(event.key);
