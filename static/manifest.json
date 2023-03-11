@@ -1,0 +1,6 @@
+{
+	"name": "Todo List",
+	"short_name": "Todo List",
+	"display": "minimal-ui",
+	"start_url": "/"
+}
