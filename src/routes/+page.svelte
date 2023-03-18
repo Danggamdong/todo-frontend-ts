@@ -2,21 +2,17 @@
 	import type { PageData } from './$types';
 
 	import type { Todo } from '$lib/todo';
+	import TodoInput from '$lib/TodoInput.svelte';
 	import TodoList from '$lib/TodoList.svelte';
 
 	export let data: PageData;
 
 	let value = '';
 
-	async function handleKeydown(event: KeyboardEvent) {
-		console.log(event.key);
-		if (event.key != 'Enter') {
-			return;
-		}
-
+	async function handleNewTodo(event: CustomEvent<{ description: string }>) {
 		const todo: Todo = {
 			id: data.todos.length + 1,
-			description: value,
+			description: event.detail.description,
 			created_at: new Date().getTime() / 1000,
 			is_finished: false
 		};
@@ -29,11 +25,41 @@
 	}
 </script>
 
-<h1>Todo List</h1>
+<div>
+	<h1>Todo List</h1>
+	<TodoInput on:newtodo={handleNewTodo} />
+	<TodoList todos={data.todos} />
+</div>
 
-<TodoList todos={data.todos} />
+<style>
+	div {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+	}
 
-<label>
-	Enter a new todo
-	<input bind:value on:keydown={handleKeydown} />
-</label>
+	/* Globals Below
+	source: https://palettes.shecodes.io/palettes/1313
+	*/
+
+	:global(.first-color) {
+		background: #ececec;
+		color: #333333;
+	}
+
+	:global(.second-color) {
+		background: #9fd3c7;
+		color: #333333;
+	}
+
+	:global(.third-color) {
+		background: #385170;
+		color: #dddddd;
+	}
+
+	:global(.fourth-color) {
+		background: #142d4c;
+		color: #dddddd;
+	}
+</style>

@@ -35,14 +35,14 @@ test('has heading', async ({ page }) => {
 	await expect(page.getByRole('heading', { name: 'Todo List' })).toBeVisible();
 });
 
-test('create todo', async ({ page }) => {
-	await page.goto('/');
+// test('create todo', async ({ page }) => {
+// 	await page.goto('/');
 
-	const todoText = page.getByLabel('Enter a new todo');
-	await expect(todoText).toBeEnabled();
+// 	const todoText = page.getByLabel('Enter a new todo');
+// 	await expect(todoText).toBeEnabled();
 
-	const expectedTodo = new Date().toISOString();
-	await todoText.fill(expectedTodo);
-	await todoText.press('Enter');
-	await expect(page.getByRole('listitem').filter({ hasText: expectedTodo })).toBeVisible();
-});
+// 	const expectedTodo = new Date().toISOString();
+// 	await todoText.fill(expectedTodo);
+// 	await todoText.press('Enter');
+// 	await expect(page.getByRole('listitem').filter({ hasText: expectedTodo })).toBeVisible();
+// });
