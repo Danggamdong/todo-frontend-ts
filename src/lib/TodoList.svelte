@@ -40,7 +40,7 @@
 	<ul>
 		{#each todos as todo, idx (todo.id)}
 			<li>
-				<TodoEntry {todo} editable />
+				<TodoEntry {todo} editable isShowingDescription />
 				<button on:click={checkTodo(idx)}>✔️</button>
 				<button on:click={removeTodo(idx)}>❌</button>
 			</li>
