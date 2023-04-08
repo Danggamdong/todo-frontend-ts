@@ -6,7 +6,7 @@
 		"preinstall": "npx only-allow pnpm",
 		"dev": "vite dev",
 		"build": "vite build",
-    "deploy": "gh-pages -d build -t true",
+		"deploy": "touch build/.nojekyll && gh-pages -d build -t true",
 		"preview": "vite preview",
 		"serve": "vite serve --host 0.0.0.0 --port 23456",
 		"test": "playwright test",
