@@ -1,12 +1,10 @@
 <script lang="ts">
-	import type { PageData } from './$types';
-
 	import TodoInput from '$lib/TodoInput.svelte';
 	import TodoList from '$lib/TodoList.svelte';
 	import type { Todo } from '$lib/todo';
 	import type { NewTodoEvent } from '$lib/types';
 
-	export let data: PageData;
+	let data: {todos: Todo[]} = {todos: []};
 
 	async function handleNewTodo(event: CustomEvent<NewTodoEvent>) {
 		const todo: Todo = {
