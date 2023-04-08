@@ -4,11 +4,11 @@
 	import TodoInput from '$lib/TodoInput.svelte';
 	import TodoList from '$lib/TodoList.svelte';
 	import type { Todo } from '$lib/todo';
-	import type { newTodoEventType } from '$lib/types';
+	import type { NewTodoEvent } from '$lib/types';
 
 	export let data: PageData;
 
-	async function handleNewTodo(event: CustomEvent<newTodoEventType>) {
+	async function handleNewTodo(event: CustomEvent<NewTodoEvent>) {
 		const todo: Todo = {
 			id: crypto.randomUUID(),
 			title: event.detail.title,

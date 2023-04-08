@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
-	import type { newTodoEventType } from './types';
+	import type { NewTodoEvent } from './types';
 
-	export const dispatch = createEventDispatcher<{ newtodo: newTodoEventType }>();
+	export const dispatch = createEventDispatcher<{ newtodo: NewTodoEvent }>();
 	export let value = '';
 
 	function submitNewTodo() {

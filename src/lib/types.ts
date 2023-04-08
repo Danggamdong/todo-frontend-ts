@@ -1,4 +1,4 @@
-export type newTodoEventType = {
+export type NewTodoEvent = {
 	title: string,
 	description: string
 }
