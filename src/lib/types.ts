@@ -1,4 +1,4 @@
 export type NewTodoEvent = {
-	title: string,
-	description: string
-}
+	title: string;
+	description: string;
+};

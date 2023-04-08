@@ -1,4 +1,4 @@
-import type { Todo } from "$lib/todo";
+import type { Todo } from '$lib/todo';
 
 type fetchType = {
 	fetch: (input: RequestInfo | URL, init?: RequestInit | undefined) => Promise<Response>;
