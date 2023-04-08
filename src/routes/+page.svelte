@@ -7,9 +7,11 @@
 
 	export let data: PageData;
 
-	let value = '';
+	type customEventType = {
+		description: string;
+	};
 
-	async function handleNewTodo(event: CustomEvent<{ description: string }>) {
+	async function handleNewTodo(event: CustomEvent<customEventType>) {
 		const todo: Todo = {
 			id: data.todos.length + 1,
 			description: event.detail.description,
