@@ -9,15 +9,23 @@
 
 	function checkTodo(idx: number): () => void {
 		function checkTodoAtIndex() {
-			todos[idx].is_finished = !todos[idx].is_finished;
+			todos[idx].isFinished = !todos[idx].isFinished;
+			if (todos[idx].isFinished) {
+				todos[idx].finishedAt = new Date().getTime() / 1000;
+			} else {
+				todos[idx].finishedAt = 0;
+			}
 		}
 		return checkTodoAtIndex;
 	}
 
-	function removeTodo(idx: number): () => void {
-		function removeTodoAtIndex() {
+	function removeTodo(idx: number): () => Promise<void> {
+		async function removeTodoAtIndex() {
+			const todoID = todos[idx].id;
 			todos.splice(idx, 1);
 			todos = todos;
+
+			await fetch(`/todos/${todoID}`, { method: 'DELETE' });
 		}
 		return removeTodoAtIndex;
 	}

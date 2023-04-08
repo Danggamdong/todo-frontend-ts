@@ -1,7 +1,8 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
+	import type { newTodoEventType } from './types';
 
-	export const dispatch = createEventDispatcher<{ newtodo: { description: string } }>();
+	export const dispatch = createEventDispatcher<{ newtodo: newTodoEventType }>();
 	export let value = '';
 
 	function submitNewTodo() {
@@ -9,7 +10,7 @@
 			alert('No Todo Typed!');
 			return;
 		}
-		dispatch('newtodo', { description: value });
+		dispatch('newtodo', { title: value, description: '' });
 		value = '';
 	}
 
@@ -27,7 +28,7 @@
 		class="second-color"
 		bind:value
 		on:keydown={handleKeydown}
-		placeholder="Type New Todo"
+		placeholder="Type Title"
 	/>
 	<button on:click={submitNewTodo}>➕</button>
 </div>

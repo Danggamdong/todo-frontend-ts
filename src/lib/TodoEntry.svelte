@@ -7,8 +7,8 @@
 
 <input
 	type="text"
-	class="first-color {todo.is_finished ? 'finished' : ''}"
-	bind:value={todo.description}
+	class="first-color {todo.isFinished ? 'finished' : ''}"
+	bind:value={todo.title}
 	disabled={!editable}
 />
 

@@ -1,22 +1,21 @@
 <script lang="ts">
 	import type { PageData } from './$types';
 
-	import type { Todo } from '$lib/todo';
 	import TodoInput from '$lib/TodoInput.svelte';
 	import TodoList from '$lib/TodoList.svelte';
+	import type { Todo } from '$lib/todo';
+	import type { newTodoEventType } from '$lib/types';
 
 	export let data: PageData;
 
-	type customEventType = {
-		description: string;
-	};
-
-	async function handleNewTodo(event: CustomEvent<customEventType>) {
+	async function handleNewTodo(event: CustomEvent<newTodoEventType>) {
 		const todo: Todo = {
-			id: data.todos.length + 1,
+			id: crypto.randomUUID(),
+			title: event.detail.title,
 			description: event.detail.description,
-			created_at: new Date().getTime() / 1000,
-			is_finished: false
+			createdAt: new Date().getTime() / 1000,
+			finishedAt: 0,
+			isFinished: false
 		};
 		data.todos = [...data.todos, todo];
 		await fetch('/todos', {
