@@ -1,16 +1,19 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
+	import type { NewTodoEvent } from './types';
 
-	export const dispatch = createEventDispatcher<{ newtodo: { description: string } }>();
-	export let value = '';
+	export const dispatch = createEventDispatcher<{ newtodo: NewTodoEvent }>();
+	export let title = '';
+	export let description = '';
 
 	function submitNewTodo() {
-		if (value === '') {
+		if (title === '') {
 			alert('No Todo Typed!');
 			return;
 		}
-		dispatch('newtodo', { description: value });
-		value = '';
+		dispatch('newtodo', { title: title, description: description });
+		title = '';
+		description = '';
 	}
 
 	function handleKeydown(event: KeyboardEvent) {
@@ -25,10 +28,13 @@
 	<input
 		type="text"
 		class="second-color"
-		bind:value
+		bind:value={title}
 		on:keydown={handleKeydown}
-		placeholder="Type New Todo"
+		placeholder="Type Title"
 	/>
+	<br>
+	<textarea class="first-color" bind:value={description} cols="50" rows="3" placeholder="Type Description"></textarea>
+
 	<button on:click={submitNewTodo}>➕</button>
 </div>
 
@@ -42,5 +48,9 @@
 		font-family: 'Noto Sans KR', serif;
 		font-size: medium;
 		font-weight: 500;
+	}
+
+	textarea {
+		resize: none;
 	}
 </style>

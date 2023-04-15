@@ -4,9 +4,7 @@ declare global {
 	namespace App {
 		// interface Error {}
 		// interface Locals {}
-		interface PageData {
-			todos: Todo[];
-		}
+		// interface PageData {}
 		// interface Platform {}
 	}
 }
