@@ -1,40 +1,95 @@
 <script lang="ts">
+	import { createEventDispatcher } from 'svelte';
 	import type { Todo } from './todo';
+	import type { RemoveTodoEvent, UpdateTodoEvent } from './types';
 
 	export let todo: Todo;
-	export let editable = false;
+	export let isEditable = false;
 	export let isShowingDescription = false;
 
-	function ShowDescription() {
+	const dispatchUpdate = createEventDispatcher<{ updatetodo: UpdateTodoEvent }>();
+	const dispatchRemove = createEventDispatcher<{ removetodo: RemoveTodoEvent }>();
+
+	function check() {
+		todo.finishedAt = new Date().getTime() / 1000,
+		todo.isFinished = true
+	}
+
+	function edit() {
+		isEditable = true;
+	}
+
+	function remove() {
+		dispatchRemove('removetodo', { id: todo.id });
+	}
+
+	function save() {
+		isEditable = false;
+
+		dispatchUpdate('updatetodo', {
+			id: todo.id,
+			title: todo.title,
+			description: todo.description,
+			finishedAt: todo.finishedAt,
+			isFinished: todo.isFinished,
+		});
+	}
+
+	function showDescription() {
 		if (isShowingDescription) return;
 		isShowingDescription = true;
 	}
 
-	function HideDescription() {
+	function hideDescription() {
 		if (!isShowingDescription) return;
 		isShowingDescription = false;
 	}
 </script>
 
-{#if isShowingDescription}
-	<button on:click={HideDescription}>🔺</button>
-{:else}
-	<button on:click={ShowDescription}>🔻</button>
-{/if}
+<div>
+	<div class="row">
+		{#if isShowingDescription}
+			<button on:click={hideDescription}>🔺</button>
+		{:else}
+			<button on:click={showDescription}>🔻</button>
+		{/if}
 
-<input
-	type="text"
-	class="first-color {todo.isFinished ? 'finished' : ''}"
-	bind:value={todo.title}
-	disabled={!editable}
-/>
+		<input
+			type="text"
+			class="first-color {todo.isFinished ? 'finished' : ''}"
+			bind:value={todo.title}
+			disabled={!isEditable}
+		/>
 
-{#if isShowingDescription}
-	<br>
-	<textarea class="first-color {todo.isFinished ? 'finished' : ''}" bind:value={todo.description} cols="60" disabled={!editable}></textarea>
-{/if}
+		{#if isEditable}
+			<button on:click={save}>Save</button>
+			<button on:click={remove}>❌</button>
+		{:else}
+			<button on:click={edit}>Edit</button>
+			<button on:click={check}>✔️</button>
+		{/if}
+	</div>
+
+	<div class="row">
+		{#if isShowingDescription}
+			<br>
+			<textarea class="first-color {todo.isFinished ? 'finished' : ''}" bind:value={todo.description} cols="60" disabled={!isEditable}></textarea>
+		{/if}
+	</div>
+</div>
 
 <style>
+	div {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+	}
+
+	div .row {
+		flex-direction: row;
+	}
+
 	input {
 		padding: 3px 20px 3px 20px;
 		margin: 1px 1px;

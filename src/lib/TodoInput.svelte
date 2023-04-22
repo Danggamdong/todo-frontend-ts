@@ -2,9 +2,10 @@
 	import { createEventDispatcher } from 'svelte';
 	import type { NewTodoEvent } from './types';
 
-	export const dispatch = createEventDispatcher<{ newtodo: NewTodoEvent }>();
 	export let title = '';
 	export let description = '';
+
+	const dispatch = createEventDispatcher<{ newtodo: NewTodoEvent }>();
 
 	function submitNewTodo() {
 		if (title === '') {

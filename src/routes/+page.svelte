@@ -1,10 +1,14 @@
 <script lang="ts">
-	import TodoInput from '$lib/TodoInput.svelte';
 	import TodoList from '$lib/TodoList.svelte';
 	import type { Todo } from '$lib/todo';
 	import type { NewTodoEvent } from '$lib/types';
+	import { onMount } from 'svelte';
 
-	let data: {todos: Todo[]} = {todos: []};
+	let todos: Todo[] = [];
+	onMount(async () => {
+		const res = await fetch('/todos');
+		todos = await res.json();
+	});
 
 	async function handleNewTodo(event: CustomEvent<NewTodoEvent>) {
 		const todo: Todo = {
@@ -15,19 +19,20 @@
 			finishedAt: 0,
 			isFinished: false
 		};
-		data.todos = [...data.todos, todo];
+		todos = [...todos, todo];
 		await fetch('/todos', {
 			method: 'POST',
 			body: JSON.stringify(todo),
 			headers: { Accept: 'application/json', 'Content-Type': 'application/json' }
 		});
 	}
+
+
 </script>
 
 <div>
 	<h1>Todo List</h1>
-	<TodoInput on:newtodo={handleNewTodo} />
-	<TodoList todos={data.todos} />
+	<TodoList todos={todos} on:newtodo={handleNewTodo} />
 </div>
 
 <style>
