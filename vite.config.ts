@@ -5,7 +5,7 @@ export default defineConfig({
 	plugins: [sveltekit()],
 	server: {
 		proxy: {
-			'/todos': 'https://misut.synology.me:12345'
+			'/todos': 'http://danggamdong.kro.kr'
 		}
 	},
 	test: {
