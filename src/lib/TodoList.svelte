@@ -1,68 +1,82 @@
 <script lang="ts">
-	import type { Todo } from './todo';
+	import { createEventDispatcher } from 'svelte';
 	import TodoEntry from './TodoEntry.svelte';
-	import ToggleSwitch from './ToggleSwitch.svelte';
+	import type { Todo } from './todo';
+	import type { NewTodoEvent, RemoveTodoEvent, UpdateTodoEvent } from './types';
 
 	export let todos: Todo[];
 
-	let isEditable = false;
+	const dispatch = createEventDispatcher<{ newtodo: NewTodoEvent }>();
 
-	function checkTodo(idx: number): () => void {
-		function checkTodoAtIndex() {
-			todos[idx].isFinished = !todos[idx].isFinished;
-			if (todos[idx].isFinished) {
-				todos[idx].finishedAt = new Date().getTime() / 1000;
-			} else {
-				todos[idx].finishedAt = 0;
-			}
-		}
-		return checkTodoAtIndex;
+	function newTodo() {
+		dispatch('newtodo', { title: 'New Todo', description: '' });
 	}
 
-	function removeTodo(idx: number): () => Promise<void> {
-		async function removeTodoAtIndex() {
-			const todoID = todos[idx].id;
-			todos.splice(idx, 1);
-			todos = todos;
-
-			await fetch(`/todos/${todoID}`, { method: 'DELETE' });
+	async function handleRemoveTodo(event: CustomEvent<RemoveTodoEvent>) {
+		let target: number | undefined = undefined;
+		for (const [idx, todo] of todos.entries()) {
+			if (todo.id != event.detail.id) continue;
+			target = idx;
 		}
-		return removeTodoAtIndex;
+
+		if (target == undefined) return;
+		todos.splice(target, 1);
+		todos = todos;
+		await fetch(`/todos/${event.detail.id}`, { method: 'DELETE' });
+	}
+
+	async function handleUpdateTodo(event: CustomEvent<UpdateTodoEvent>) {
+		let updated: Todo | undefined = undefined;
+		for (const [idx, todo] of todos.entries()) {
+			if (todo.id != event.detail.id) continue;
+
+			todos[idx].title = event.detail.title;
+			todos[idx].description = event.detail.description;
+			todos[idx].finishedAt = event.detail.finishedAt;
+			todos[idx].isFinished = event.detail.isFinished;
+			updated = todos[idx];
+			break;
+		}
+
+		if (updated == undefined) return;
+		await fetch(`/todos/${updated.id}`, {
+			method: 'PUT',
+			body: JSON.stringify(event.detail),
+			headers: { Accept: 'application/json', 'Content-Type': 'application/json' }
+		})
 	}
 </script>
 
 <div>
-	<p>Wanna edit?</p>
-	<ToggleSwitch bind:value={isEditable} />
-</div>
-
-{#if isEditable}
 	<ul>
-		{#each todos as todo, idx (todo.id)}
+		{#each todos as todo (todo.id)}
 			<li>
-				<TodoEntry {todo} editable isShowingDescription />
-				<button on:click={checkTodo(idx)}>✔️</button>
-				<button on:click={removeTodo(idx)}>❌</button>
+				<TodoEntry {todo} on:removetodo={handleRemoveTodo} on:updatetodo={handleUpdateTodo} />
 			</li>
 		{/each}
 	</ul>
-{:else}
-	<ul>
-		{#each todos as todo (todo.id)}
-			<li><TodoEntry {todo} /></li>
-		{/each}
-	</ul>
-{/if}
+
+	<button on:click={newTodo}>New Todo</button>
+</div>
 
 <style>
 	div {
+		padding: 20px;
+
+		background-color: gray;
+
+		border: 0;
+		border-radius: 25px;
+
 		display: flex;
-		flex-direction: row;
+		flex-direction: column;
 		justify-content: center;
 		align-items: center;
 	}
 
 	ul {
+		padding: 0px;
+
 		list-style: none;
 	}
 </style>
