@@ -1,0 +1,6 @@
+.dockerignore
+.editorconfig
+.eslint*
+.git
+.gitignore
+.prettier*
