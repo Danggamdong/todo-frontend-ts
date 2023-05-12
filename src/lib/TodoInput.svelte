@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
+
 	import type { NewTodoEvent } from './types';
 
 	export let title = '';
@@ -33,8 +34,14 @@
 		on:keydown={handleKeydown}
 		placeholder="Type Title"
 	/>
-	<br>
-	<textarea class="first-color" bind:value={description} cols="50" rows="3" placeholder="Type Description"></textarea>
+	<br />
+	<textarea
+		class="first-color"
+		bind:value={description}
+		cols="50"
+		rows="3"
+		placeholder="Type Description"
+	/>
 
 	<button on:click={submitNewTodo}>➕</button>
 </div>

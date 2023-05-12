@@ -2,5 +2,9 @@
 .editorconfig
 .eslint*
 .git
+.github
 .gitignore
 .prettier*
+.svelte-kit
+build
+node_modules

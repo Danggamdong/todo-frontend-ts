@@ -1,8 +1,10 @@
 <script lang="ts">
-	import TodoList from '$lib/TodoList.svelte';
-	import type { Todo } from '$lib/todo';
-	import type { NewTodoEvent } from '$lib/types';
 	import { onMount } from 'svelte';
+	import { v4 as uuidv4 } from 'uuid';
+
+	import type { Todo } from '$lib/todo';
+	import TodoList from '$lib/TodoList.svelte';
+	import type { NewTodoEvent } from '$lib/types';
 
 	let todos: Todo[] = [];
 	onMount(async () => {
@@ -12,7 +14,7 @@
 
 	async function handleNewTodo(event: CustomEvent<NewTodoEvent>) {
 		const todo: Todo = {
-			id: crypto.randomUUID(),
+			id: uuidv4(),
 			title: event.detail.title,
 			description: event.detail.description,
 			createdAt: new Date().getTime() / 1000,
@@ -26,13 +28,11 @@
 			headers: { Accept: 'application/json', 'Content-Type': 'application/json' }
 		});
 	}
-
-
 </script>
 
 <div>
 	<h1>Todo List</h1>
-	<TodoList todos={todos} on:newtodo={handleNewTodo} />
+	<TodoList {todos} on:newtodo={handleNewTodo} />
 </div>
 
 <style>

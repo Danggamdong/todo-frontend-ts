@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
+
 	import type { Todo } from './todo';
 	import type { RemoveTodoEvent, UpdateTodoEvent } from './types';
 
@@ -11,8 +12,7 @@
 	const dispatchRemove = createEventDispatcher<{ removetodo: RemoveTodoEvent }>();
 
 	function check() {
-		todo.finishedAt = new Date().getTime() / 1000,
-		todo.isFinished = true
+		(todo.finishedAt = new Date().getTime() / 1000), (todo.isFinished = true);
 	}
 
 	function edit() {
@@ -31,7 +31,7 @@
 			title: todo.title,
 			description: todo.description,
 			finishedAt: todo.finishedAt,
-			isFinished: todo.isFinished,
+			isFinished: todo.isFinished
 		});
 	}
 
@@ -72,8 +72,13 @@
 
 	<div class="row">
 		{#if isShowingDescription}
-			<br>
-			<textarea class="first-color {todo.isFinished ? 'finished' : ''}" bind:value={todo.description} cols="60" disabled={!isEditable}></textarea>
+			<br />
+			<textarea
+				class="first-color {todo.isFinished ? 'finished' : ''}"
+				bind:value={todo.description}
+				cols="60"
+				disabled={!isEditable}
+			/>
 		{/if}
 	</div>
 </div>
