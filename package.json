@@ -6,9 +6,8 @@
 		"preinstall": "npx only-allow pnpm",
 		"dev": "vite dev",
 		"build": "vite build",
-		"deploy": "touch build/.nojekyll && gh-pages -d build -t true",
 		"preview": "vite preview",
-		"serve": "vite serve --host 0.0.0.0 --port 23456",
+		"serve": "vite serve --host 0.0.0.0 --port 80 --mode deploy",
 		"test": "playwright test",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
@@ -21,6 +20,7 @@
 		"@sveltejs/adapter-auto": "^2.0.0",
 		"@sveltejs/adapter-static": "^2.0.1",
 		"@sveltejs/kit": "^1.5.0",
+		"@types/uuid": "^9.0.1",
 		"@typescript-eslint/eslint-plugin": "^5.45.0",
 		"@typescript-eslint/parser": "^5.45.0",
 		"eslint": "^8.28.0",
@@ -36,5 +36,8 @@
 		"vite": "^4.0.0",
 		"vitest": "^0.25.8"
 	},
-	"type": "module"
+	"type": "module",
+	"dependencies": {
+		"uuid": "^9.0.0"
+	}
 }

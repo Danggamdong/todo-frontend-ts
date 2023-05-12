@@ -1,7 +1,8 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
-	import TodoEntry from './TodoEntry.svelte';
+
 	import type { Todo } from './todo';
+	import TodoEntry from './TodoEntry.svelte';
 	import type { NewTodoEvent, RemoveTodoEvent, UpdateTodoEvent } from './types';
 
 	export let todos: Todo[];
@@ -43,7 +44,7 @@
 			method: 'PUT',
 			body: JSON.stringify(event.detail),
 			headers: { Accept: 'application/json', 'Content-Type': 'application/json' }
-		})
+		});
 	}
 </script>
 
@@ -51,7 +52,11 @@
 	<ul>
 		{#each todos as todo (todo.id)}
 			<li>
-				<TodoEntry {todo} on:removetodo={handleRemoveTodo} on:updatetodo={handleUpdateTodo} />
+				<TodoEntry
+					{todo}
+					on:removetodo={handleRemoveTodo}
+					on:updatetodo={handleUpdateTodo}
+				/>
 			</li>
 		{/each}
 	</ul>
