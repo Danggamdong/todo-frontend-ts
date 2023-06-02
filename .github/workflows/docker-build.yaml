@@ -1,9 +1,8 @@
 name: docker-build
 run-name: Build a docker image by ${{ github.actor }}
 on:
-  push:
-    branches:
-      - main
+  release:
+    types: [published]
 jobs:
   build-docker-image:
     runs-on: ubuntu-latest
@@ -23,4 +22,4 @@ jobs:
           context: .
           platforms: linux/arm64
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/todo-frontend-ts:deploy
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/todo-frontend-ts:${{ github.ref_name }}
