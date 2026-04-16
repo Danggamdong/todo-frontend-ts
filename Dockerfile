@@ -5,6 +5,6 @@ WORKDIR /app
 COPY . /app
 
 RUN npm install -g pnpm
-RUN pnpm install && pnpm run build
+RUN pnpm install --prod && pnpm build
 
 ENTRYPOINT [ "pnpm", "serve" ]
